@@ -4,6 +4,8 @@ import Auth from './Auth';
 import Controls from './Controls';
 import Device from './Device';
 import Messages from './Messages';
+import Status from './Status';
+
 import xAPI from './api';
 
 const ZOOM_IN = 'ZOOM_IN';
@@ -20,6 +22,7 @@ export default function Main() {
   const [hasToken, setHasToken] = useState(false);
   const [messages, setMessages] = useState([]);
   const [api, setApi] = useState();
+  const [status, setStatus] = useState({});
 
   function addMessage(message) {
     const updatedMessages = [...messages, message];
@@ -91,6 +94,12 @@ export default function Main() {
     api.setDevice(deviceID);
   }
 
+  function handleGetStatus() {
+    api.getStatus().then((apiStatus) => {
+      setStatus(apiStatus);
+    });
+  }
+
   return (
     <div>
       {
@@ -112,6 +121,7 @@ export default function Main() {
             onPanStop={() => handleControl(PAN_STOP)}
             onPanRight={() => handleControl(PAN_RIGHT)}
           />
+          <Status onGetStatus={handleGetStatus} status={status} />
           <Messages messages={messages} />
         </>
       }

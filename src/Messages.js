@@ -16,6 +16,7 @@ function Messages({messages}) {
 
   return (
     <div style={messagesStyle} id="messages">
+      <h2>Application Messages</h2>
       <ul>
         {messageElements}
       </ul>
