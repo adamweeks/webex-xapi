@@ -146,7 +146,20 @@ export default class xAPI {
       referrer: 'no-referrer' // no-referrer, *client
     });
     
-    return await response.json(); // parses JSON response into native JavaScript objects)
+    const data = await response.json(); // parses JSON response into native JavaScript objects)
+    const stats = {};
+
+    stats["lightingConditions"] = data.result.Cameras.Camera[0].LightingConditions;
+    stats["hdmiStatus"] = data.result.Audio.Output.Connectors.HDMI[0].Mode;
+    stats["standbyState"] = data.result.Standby.State;
+    stats["tvPowerStatus"] = data.result.Video.Output.Connector[0].ConnectedDevice.CEC[0].PowerStatus;
+    stats["webexRegistrationStatus"] = data.result.Webex.Status;
+    stats["webexRegistrationStatus"] = data.result.Webex.Status;
+    stats["uptime"] = data.result.SystemUnit.Uptime;
+    stats["peopleCount"] = data.result.RoomAnalytics.PeopleCount.Current;
+    stats["peoplePresence"] = data.result.RoomAnalytics.PeoplePresence;
+    
+    return stats;
   }
 
   async setPosition({x, y}) {
