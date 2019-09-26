@@ -100,6 +100,12 @@ export default function Main() {
     });
   }
 
+  async function handleSetPosition(position) {
+    addMessage(`setting position: ${position.x}, ${position.y}`);
+    await api.setPosition(position);
+    addMessage(`position set`);
+  }
+
   return (
     <div>
       {
@@ -120,6 +126,7 @@ export default function Main() {
             onPanLeft={() => handleControl(PAN_LEFT)}
             onPanStop={() => handleControl(PAN_STOP)}
             onPanRight={() => handleControl(PAN_RIGHT)}
+            onSetPosition={handleSetPosition}
           />
           <Status onGetStatus={handleGetStatus} status={status} />
           <Messages messages={messages} />
