@@ -4,18 +4,23 @@ import PropTypes from 'prop-types';
 import {Button, Input} from '@momentum-ui/react';
 
 function Auth(props) {
-  const [token, setToken] = useState("")
+  const [token, setToken] = useState(process.env.REACT_APP_TOKEN)
 
+  function handleChange(e) {
+    setToken(e.target.value);
+  }
 
   return (
     <>
       <Input 
+        autoComplete="on"
         label="Access Token" 
         id="token" 
         placeholder="Access Token" 
-        onChange={(e) => {setToken(e.value)}} 
+        onChange={handleChange} 
+        value={token}
       />
-      <Button children="Save Token" onClick={props.onAuth(token)} />
+      <Button children="Save Token" onClick={() => props.onAuth(token)} />
     </>
   )
 }
