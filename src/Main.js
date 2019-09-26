@@ -5,6 +5,7 @@ import Controls from './Controls';
 import Device from './Device';
 import Messages from './Messages';
 import Status from './Status';
+import PeopleWatcher from './PeopleWatcher';
 
 import xAPI from './api';
 
@@ -23,6 +24,8 @@ export default function Main() {
   const [messages, setMessages] = useState([]);
   const [api, setApi] = useState();
   const [status, setStatus] = useState({});
+  const [peopleCount, setPeopleCount] = useState(0);
+  const [peopleLastSeen, setPeopleLastSeen] = useState();
 
   function addMessage(message) {
     const updatedMessages = [...messages, message];
@@ -94,6 +97,15 @@ export default function Main() {
     api.setDevice(deviceID);
   }
 
+  async function handleGetPeopleCount() {
+    const getPeopleCountResults = await api.getPeopleCount();
+    
+    setPeopleCount(getPeopleCountResults);
+    if (getPeopleCountResults) {
+      setPeopleLastSeen(new Date().toString());
+    }
+  }
+
   function handleGetStatus() {
     api.getStatus().then((apiStatus) => {
       setStatus(apiStatus);
@@ -127,6 +139,11 @@ export default function Main() {
             onPanStop={() => handleControl(PAN_STOP)}
             onPanRight={() => handleControl(PAN_RIGHT)}
             onSetPosition={handleSetPosition}
+          />
+          <PeopleWatcher 
+            onGetPeopleCount={handleGetPeopleCount} 
+            peopleCount={peopleCount}
+            peopleLastSeen={peopleLastSeen}
           />
           <Status onGetStatus={handleGetStatus} status={status} />
           <Messages messages={messages} />

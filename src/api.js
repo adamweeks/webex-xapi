@@ -162,6 +162,24 @@ export default class xAPI {
     return stats;
   }
 
+  async getPeopleCount() {
+    const endpoint = `/xapi/status/?deviceId=${this.deviceId}&name=roomanalytics.peoplecount.current`;
+    const url = `${this.baseUrl}${endpoint}`;
+    const response = await fetch(url, {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: this.headers,
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer' // no-referrer, *client
+    });
+    
+    const data = await response.json(); // parses JSON response into native JavaScript objects)
+    
+    return data.result.RoomAnalytics.PeopleCount.Current;
+  }
+
   async setPosition({x, y}) {
     const panValue = x * 10000 * -1;
     const tiltValue = y * 2500 * -1;
